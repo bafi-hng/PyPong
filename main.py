@@ -8,45 +8,33 @@ screen_rect = screen.get_rect()
 clock = pygame.time.Clock()
 running = True
 
-speed = 400
+speed_x = 300
+speed_y = 400
 dt = 0
 
-# player object
-player_surf = pygame.Surface((30, 30))
-pygame.draw.circle(player_surf, "white", (15, 15), 15)
-player_rect = player_surf.get_rect()
+# pong object
+pong_surf = pygame.Surface((30, 30))
+pygame.draw.circle(pong_surf, "white", (15, 15), 15)
+pong_rect = pong_surf.get_rect()
 
 # start position
-player_rect.x = screen.get_width() / 2
-player_rect.y = screen.get_height() / 2
+pong_rect.x = screen.get_width() / 2
+pong_rect.y = screen.get_height() / 2
 
 
 while running:
 
     screen.fill((0,0,0))
-    screen.blit(player_surf, player_rect)
+    screen.blit(pong_surf, pong_rect)
 
-    dist = speed * dt
-    keys = pygame.key.get_pressed()
+    pong_rect.x += speed_x * dt
+    pong_rect.y += speed_y * dt
 
-    # control movement
-    if keys[pygame.K_UP]:
-        player_rect.y -= dist
-    if keys[pygame.K_DOWN]:
-        player_rect.y += dist
-    if keys[pygame.K_LEFT]:
-        player_rect.x -= dist
-    if keys[pygame.K_RIGHT]:
-        player_rect.x += dist
+    if pong_rect.left <= screen_rect.left or pong_rect.right >= screen_rect.right:
+        speed_x *= -1
+    if pong_rect.top <= screen_rect.top or pong_rect.bottom >= screen_rect.bottom:
+        speed_y *= -1
 
-    if player_rect.left <= screen_rect.left:
-        player_rect.left = screen_rect.left
-    if player_rect.right >= screen_rect.right:
-        player_rect.right = screen_rect.right
-    if player_rect.top <= screen_rect.top:
-        player_rect.top = screen_rect.top
-    if player_rect.bottom >= screen_rect.bottom:
-        player_rect.bottom = screen_rect.bottom
 
     pygame.display.flip()
 
